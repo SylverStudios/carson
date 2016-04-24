@@ -9,7 +9,7 @@ class Parser(object):
         pull_request_api_url = comment_message['issue']['pull_request']['url']
         pull_request_data = self.get_pull_request_data(pull_request_api_url)
         parsed = {
-            'sha': pull_request_data['merge_commit_sha'],
+            'sha': pull_request_data['head']['sha'],
             'github_username': comment_message['sender']['login'],
             'timestamp': comment_message['comment']['created_at'],
             'issue_number': comment_message['issue']['number'],

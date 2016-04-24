@@ -17,7 +17,7 @@ class GithubParserTest(unittest.TestCase):
         parser = Parser()
         parser.get_pull_request_data = self.mock_get_pull_request_data
         parsedData = parser.parse_comment_message(data)
-        self.assertEqual(parsedData['sha'], 'a5b6485a079091efbe6d5aa5122acec1dde02df4')
+        self.assertEqual(parsedData['sha'], '7753bb8a60c85105636aaa176c830475b3fa1586')
         self.assertEqual(parsedData['github_username'], 'samgqroberts')
         self.assertEqual(parsedData['timestamp'], '2016-04-24T17:40:32Z')
         self.assertEqual(parsedData['issue_number'], 2)
