@@ -1,3 +1,6 @@
 class Parser(object):
-    def printthing(self):
-        print ('hi')
+    def parse(self, message):
+        parsed = {
+          'issue_number': message['issue']['number']
+        }
+        return parsed
