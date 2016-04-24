@@ -1,8 +1,8 @@
 import datetime
 
-from models import Appointment
-import github.actions as gh
-import slack.actions as slack
+from .models import Appointment
+from .github import actions as gh
+from .slack import actions as slack
 
 
 class Lifecycle(object):

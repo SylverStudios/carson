@@ -1,6 +1,6 @@
 import requests
 
-from auth import UrlBuilder
+from .auth import UrlBuilder
 
 
 class MergeAction(object):
@@ -13,7 +13,7 @@ class MergeAction(object):
         self.appointment = appointment
 
     def run(self):
-        resource = self.URL.format(self.appointment.repo)
+        resource = self.URL.format(fullname=self.appointment.repo)
         url = UrlBuilder(resource).get()
         data = {
             "base": self.appointment.base_branch,
