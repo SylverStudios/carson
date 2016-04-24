@@ -13,5 +13,7 @@ class Parser(object):
             'github_username': comment_message['sender']['login'],
             'timestamp': comment_message['comment']['created_at'],
             'issue_number': comment_message['issue']['number'],
+            'repo': comment_message['repository']['full_name'],
+            'base_branch': pull_request_data['base']['ref'],
         }
         return parsed

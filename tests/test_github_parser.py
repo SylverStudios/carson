@@ -21,3 +21,5 @@ class GithubParserTest(unittest.TestCase):
         self.assertEqual(parsedData['github_username'], 'samgqroberts')
         self.assertEqual(parsedData['timestamp'], '2016-04-24T17:40:32Z')
         self.assertEqual(parsedData['issue_number'], 2)
+        self.assertEqual(parsedData['repo'], 'SylverStudios/carson')
+        self.assertEqual(parsedData['base_branch'], 'master')
