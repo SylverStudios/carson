@@ -4,9 +4,9 @@ class NotifyAction(object):
     FAIL_MESSAGE = "One or more tests failed on PR #{pr}"
     MERGING_MESSAGE = "Merging PR #{pr}"
 
-    def __init__(self, appointment, merge=False):
+    def __init__(self, appointment, message=None):
         self.appointment = appointment
-        self.merge = merge
+        self.message = message
 
     def run(self):
         pass  # TODO :-)

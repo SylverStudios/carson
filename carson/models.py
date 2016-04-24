@@ -12,6 +12,7 @@ class Appointment(db.Model):
     commit_sha = db.Column(db.String(40))
     pr_number = db.Column(db.Integer)
     gh_username = db.Column(db.Text)
+    base_branch = db.Column(db.Text)
 
     conditions = db.Column(db.Enum("passed", "any_failed", name="conditions"))
     action = db.Column(db.Enum("merge", "notify_slack", name="actions"))

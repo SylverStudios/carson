@@ -1,3 +1,5 @@
+import datetime
+
 from models import Appointment
 import github.actions as gh
 import slack.actions as slack
@@ -6,11 +8,12 @@ import slack.actions as slack
 class Lifecycle(object):
     """Responsible for creating/retrieving appointment objects in the DB
     given identifying info."""
-    def __init__(self, gh_username, repo, sha, pr_number):
+    def __init__(self, gh_username, repo, sha, pr_number, base_branch):
         self.gh_username = gh_username
         self.repo = repo
         self.sha = sha
         self.pr_number = pr_number
+        self.base_branch = base_branch
 
     def __find(self, action, conditions):
         return self.__find_or_create(action, conditions, create=False)
@@ -21,6 +24,7 @@ class Lifecycle(object):
             repo=self.repo,
             commit_sha=self.sha,
             pr_number=self.pr_number,
+            base_branch=self.base_branch,
             action=action,
             conditions=conditions,
             processed=None,
@@ -31,10 +35,15 @@ class Lifecycle(object):
             match.commit_sha = self.sha
             match.pr_number = self.pr_number
             match.gh_username = self.gh_username
+            match.base_branch = self.base_branch
             match.action = action
             match.conditions = conditions
             match.write()
         return match
+
+    def __mark_processed(self, appointment):
+        appointment.processed = datetime.datetime.utcnow()
+        appointment.write()
 
     def queue_merge(self):
         self.__find_or_create(action="merge", conditions="passed")
@@ -47,12 +56,17 @@ class Lifecycle(object):
         notify = self.__find(action="notify_slack", conditions="passed")
         if notify is not None:
             slack.NotifyAction(notify).run()
+            self.__mark_processed(notify)
         merge = self.__find(action="merge", conditions="passed")
         if merge is not None:
-            slack.NotifyAction(merge, merge=True).run()
-            gh.MergeAction(merge).run()
+            merge_action = gh.MergeAction(merge)
+            merge_action.run()
+            message = merge_action.get_message()
+            slack.NotifyAction(merge, message=message).run()
+            self.__mark_processed(merge)
 
     def any_test_failed(self):
         notify = self.__find(action="notify_slack", conditions="any_failed")
         if notify is not None:
             slack.NotifyAction(notify).run()
+            self.__mark_processed(notify)
