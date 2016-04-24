@@ -1,0 +1,11 @@
+flask
+sqlalchemy
+flask-sqlalchemy
+flask-login
+flask-oauthlib
+ipython
+gunicorn
+pyOpenSSL
+service_identity
+psycopg2
+requests
