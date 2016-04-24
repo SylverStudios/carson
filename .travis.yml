@@ -1,0 +1,10 @@
+language: python
+python:
+- '3.5'
+before_install:
+- pip install codecov
+install:
+- pip install -r requirements.txt
+script: nosetests --with-coverage --cover-inclusive --cover-package=pipes
+after_success:
+- codecov
