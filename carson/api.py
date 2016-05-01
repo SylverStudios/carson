@@ -17,4 +17,6 @@ def handle_github_issue_comment():
 # Services reports
 @app.route('/messages/github/commit_status', methods=['POST'])
 def handle_github_commit_status():
-    # TODO implement
+    parsed = Parser().parse_commit_status(request.get_json(force=True));
+    print(parsed)
+    return jsonify(parsed)
