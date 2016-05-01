@@ -11,7 +11,7 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   - export REPO=gnmerritt/carson
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - export TAG=`if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo "latest"; else echo "pr-${TRAVIS_PULL_REQUEST}"; fi`
   - docker build -f Dockerfile -t $REPO:$COMMIT .
   - docker tag $REPO:$COMMIT $REPO:$TAG
   - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
@@ -19,3 +19,6 @@ after_success:
 env:
   global:
     - COMMIT=${TRAVIS_COMMIT::8}
+branches:
+    only:
+      - master
