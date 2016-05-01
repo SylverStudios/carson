@@ -7,8 +7,14 @@ from carson.github.parser import Parser
 def placeholder():
     return jsonify({"Hello": "World"})
 
-@app.route('/accept_message/github', methods=['POST'])
-def accept_github_message():
+# Pull Requests are considered Issues in this part of the API
+@app.route('/messages/github/issue_comment', methods=['POST'])
+def handle_github_issue_comment():
     parsed = Parser().parse_comment_message(request.get_json(force=True))
     print(parsed)
     return jsonify(parsed)
+
+# Services reports
+@app.route('/messages/github/commit_status', methods=['POST'])
+def handle_github_commit_status():
+    # TODO implement
