@@ -1,10 +1,22 @@
+sudo: required
+services:
+  - docker
 language: python
 python:
-- '3.5'
+  - '3.5'
 before_install:
-- pip install codecov
+
 install:
-- pip install -r requirements.txt
+  - pip install -r requirements.txt
 script: nosetests --with-coverage --cover-inclusive --cover-package=carson
 after_success:
-- bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash)
+  - export REPO=gnmerritt/carson
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker build -f Dockerfile -t $REPO:$COMMIT .
+  - docker tag $REPO:$COMMIT $REPO:$TAG
+  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+  - docker push $REPO
+env:
+  global:
+    - COMMIT=${TRAVIS_COMMIT::8}
