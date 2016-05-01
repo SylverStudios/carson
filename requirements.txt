@@ -10,3 +10,4 @@ service_identity
 psycopg2
 requests
 nose
+coverage
