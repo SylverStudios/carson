@@ -11,6 +11,7 @@ install:
 script: nosetests --with-coverage --cover-inclusive --cover-package=carson
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   - export REPO=gnmerritt/carson
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - docker build -f Dockerfile -t $REPO:$COMMIT .
